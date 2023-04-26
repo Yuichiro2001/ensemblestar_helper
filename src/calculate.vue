@@ -1,9 +1,8 @@
 <script setup>
 import { computed, onMounted, reactive, watch } from 'vue'
-import "./components/infotmation"
 // do not use same name with ref
 const personal = reactive({
-  bp: 0,
+  bp: 20,
   workpass: 0,
   pass: 0,
   bp1: 0,
@@ -21,6 +20,7 @@ const personal = reactive({
   actgift:0,
   dailybp: 0,
   dailydia: 0,
+  bp100gift:false,
   
 })
 const act_detail =reactive({
@@ -60,11 +60,14 @@ const general_plus=reactive({
 const onSubmit = () => {
   console.log('submit!')
 }
+
 onMounted(() => {
   act_detail.date2 = new Date(0,0,0,22,0,0)
   console.log('mounted!')
-  this.fivestar=unitplus_withthreestar.fivestar[5]
-  console.log(fivestar)
+  console.log(unitplus_nothreestar.fivestar[5])
+  console.log(time_remain())
+  console.log(total_bp(time_remain(),personal.bp))
+  
 })
 computed(()=>{
   // if 
@@ -176,7 +179,10 @@ computed(()=>{
           </el-row>
         </el-form-item>
         <el-form-item label="赠送资源">
-          <el-row>
+          <el-form-item label="是否赠送100哨子">
+          <el-switch v-model="personal.bp100gift" />
+          </el-form-item>
+          <!-- <el-row>
             <el-col :span="8">
               <el-form-item label="BP">
                 <el-input v-model="personal.bpgift"/>
@@ -209,7 +215,7 @@ computed(()=>{
                 <el-input v-model="personal.doublegift"/>
               </el-form-item>
             </el-col>
-          </el-row>
+          </el-row> -->
         </el-form-item>
         <el-form-item label="礼包">
           <el-row justify="center">
