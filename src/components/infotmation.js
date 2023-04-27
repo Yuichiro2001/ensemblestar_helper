@@ -75,9 +75,68 @@ function total_other_bp(bp1,bp10){
     var total_other_bp=bp1+bp10*10;
     return total_other_bp;
 }
-function double_card(double,total_bp,total_other_bp){
-    
-
+function pack(monthpass,doublepack,pack1,pack2,dailybp,dailydia,time_remain){
+    var pack_detail={
+        double_card:0,
+        bp1:0,
+        bp10:10
+    }
+    //处理剩余多少天
+    var day_remain=parseInt(time_remain/60/24);
+    //应援月卡
+    if (monthpass){
+        pack_detail.double_card=pack_detail.double_card+(15*day_remain)
+    }
+    //翻倍卡礼包
+    if (doublepack){
+        pack_detail.double_card=pack_detail.double_card+200
+    }
+    //演唱会特享礼包
+    if (pack1){
+        pack_detail.double_card=pack_detail.double_card+300
+        pack_detail.bp1=pack_detail.bp1+300
+    }
+    //演唱会助力大礼包
+    if (pack2>0){
+        pack_detail.double_card=pack_detail.double_card+(500*pack2)
+        pack_detail.bp1=pack_detail.bp1+(500*pack2)
+    }
+    //每日BP礼包
+    if (day_remain>=dailybp>0){
+        pack_detail.bp1=pack_detail.bp1+(20*dailybp)
+    }
+    else if (dailybp>day_remain){4
+        alert("每日BP礼包可购买次数超过上限，当前距离活动结束还有"+day_remain+"天")
+    }
+    //每日付费单抽
+    if(day_remain>=dailydia>0){
+        pack_detail.bp1=pack_detail.bp1+(3*dailydia)
+    }
+    else if (dailydia>day_remain){
+        alert("每日钻石礼包可购买次数超过上限，当前距离活动结束还有"+day_remain+"天")
+    }
+    return pack_detail;
+}
+function total_resource(bp,workpass,double_card,pack){
+    total_bp=bp+pack.bp1+pack.bp10*10;
+    total_double_card=double_card+pack.double_card;
+    return {bp:total_bp,doublecard:total_double_card,workpass:workpass};
+}
+function double_card(total_resource){
+    //默认只在bp消耗时使用翻倍卡，活动歌曲不使用
+    //当总可用BP小于翻倍卡时，计算消耗掉总可用BP的翻倍卡数量并导出剩余翻倍卡至钻石消耗计算
+    if (total_resource.bp<total_resource.doublecard){
+        doublecard_remain=total_resource.doublecard-total_resource.bp;
+        return{
+            doublecard_remain:true,
+            doublecard_remain_quantity:doublecard_remain,
+        }
+    }
+    else{
+        return {
+            doublecard_remain:false
+        }
+    }
 }
 function total_pass(){
     var pass_remain=1

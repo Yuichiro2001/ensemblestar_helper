@@ -67,6 +67,8 @@ onMounted(() => {
   console.log(unitplus_nothreestar.fivestar[5])
   console.log(time_remain())
   console.log(total_bp(time_remain(),personal.bp))
+  console.log(parseInt(time_remain()/60/24))
+
   
 })
 computed(()=>{
